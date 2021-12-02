@@ -13,26 +13,14 @@ test = """\
 263"""
 
 
-def _1(inp: str):
+def _1(inp: str) -> int:
     lines = [int(x) for x in inp.splitlines()]
-    count = 0
-    for idx, current in enumerate(lines[:-1]):
-        next = lines[idx+1]
-        if next > current:
-            count += 1
-
-    return count
+    return sum(nxt > current for nxt, current in zip(lines[1:], lines))
 
 
-def _2(inp: str):
+def _2(inp: str) -> int:
     lines = [int(x) for x in inp.splitlines()]
-    count = 0
-    for idx, current in enumerate(lines[:-3]):
-        next = lines[idx+3]
-        if next > current:
-            count += 1
-
-    return count
+    return sum(nxt > current for nxt, current in zip(lines[3:], lines))
 
 
 if __name__ == '__main__':
