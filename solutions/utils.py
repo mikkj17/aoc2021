@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from typing import Callable, List
 
 
-def download_input(day: int, path: str):
+def download_input(day: int, path: str) -> None:
     load_dotenv()
     url = f'https://adventofcode.com/2021/day/{day}/input'
     session = os.getenv('SESSION')
@@ -25,7 +25,7 @@ def load() -> str:
         return f.read()
 
 
-def main(funcs: List[Callable[[str], int]], test_inputs: List[str]) -> List[int]:
+def main(funcs: List[Callable[[str], int]], test_inputs: List[str]) -> List[List[int]]:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-t', '--test',
