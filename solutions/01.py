@@ -1,5 +1,3 @@
-import sys
-
 import utils
 
 test = """\
@@ -15,8 +13,7 @@ test = """\
 263"""
 
 
-def _1():
-    inp = utils.load()
+def _1(inp: str):
     lines = [int(x) for x in inp.splitlines()]
     count = 0
     for idx, current in enumerate(lines[:-1]):
@@ -27,8 +24,7 @@ def _1():
     return count
 
 
-def _2():
-    inp = utils.load()
+def _2(inp: str):
     lines = [int(x) for x in inp.splitlines()]
     count = 0
     for idx, current in enumerate(lines[:-3]):
@@ -40,5 +36,5 @@ def _2():
 
 
 if __name__ == '__main__':
-    print(globals()[f'_{sys.argv[1]}']())
+    print(utils.main([_1, _2], [test]))
 

@@ -1,5 +1,3 @@
-import sys
-
 import utils
 
 test = """\
@@ -11,8 +9,7 @@ down 8
 forward 2"""
 
 
-def _1():
-    inp = utils.load()
+def _1(inp: str):
     horizontal = depth = 0
     for line in inp.splitlines():
         p, x = line.split()
@@ -26,8 +23,7 @@ def _1():
     return horizontal * depth
 
 
-def _2():
-    inp = utils.load()
+def _2(inp: str):
     horizontal = depth = aim = 0
     for line in inp.splitlines():
         p, x = line.split()
@@ -42,7 +38,6 @@ def _2():
     return horizontal * depth
 
 
-
 if __name__ == '__main__':
-    print(globals()[f'_{sys.argv[1]}']())
+    print(utils.main([_1, _2], [test]))
 
