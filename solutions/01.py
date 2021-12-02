@@ -24,5 +24,5 @@ def _2(inp: str) -> int:
 
 
 if __name__ == '__main__':
-    print(utils.main([_1, _2], [test]))
+    print(utils.runner([_1, _2], [test]))
 

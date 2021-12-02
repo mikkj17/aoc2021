@@ -12,8 +12,8 @@ forward 2"""
 def _1(inp: str) -> int:
     horizontal = depth = 0
     for line in inp.splitlines():
-        command, x = line.split()
-        x = int(x)
+        command, a = line.split()
+        x = int(a)
         if command == 'forward':
             horizontal += x
         elif command == 'down':
@@ -26,8 +26,8 @@ def _1(inp: str) -> int:
 def _2(inp: str) -> int:
     horizontal = depth = aim = 0
     for line in inp.splitlines():
-        command, x = line.split()
-        x = int(x)
+        command, a = line.split()
+        x = int(a)
         if command == 'down':
             aim += x
         elif command == 'up':
@@ -39,5 +39,5 @@ def _2(inp: str) -> int:
 
 
 if __name__ == '__main__':
-    print(utils.main([_1, _2], [test]))
+    print(utils.runner([_1, _2], [test]))
 

@@ -25,7 +25,7 @@ def load() -> str:
         return f.read()
 
 
-def main(funcs: List[Callable[[str], int]], test_inputs: List[str]) -> List[List[int]]:
+def runner(funcs: List[Callable[[str], int]], test_inputs: List[str]) -> List[List[int]]:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-t', '--test',
