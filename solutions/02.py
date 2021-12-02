@@ -9,32 +9,32 @@ down 8
 forward 2"""
 
 
-def _1(inp: str):
+def _1(inp: str) -> int:
     horizontal = depth = 0
     for line in inp.splitlines():
-        p, x = line.split()
+        command, x = line.split()
         x = int(x)
-        if p == 'forward':
+        if command == 'forward':
             horizontal += x
-        elif p == 'down':
+        elif command == 'down':
             depth += x
         else:
             depth -= x
     return horizontal * depth
 
 
-def _2(inp: str):
+def _2(inp: str) -> int:
     horizontal = depth = aim = 0
     for line in inp.splitlines():
-        p, x = line.split()
+        command, x = line.split()
         x = int(x)
-        if p == 'forward':
+        if command == 'down':
+            aim += x
+        elif command == 'up':
+            aim -= x
+        else:
             horizontal += x
             depth += aim * x
-        elif p == 'down':
-            aim += x
-        else:
-            aim -= x
     return horizontal * depth
 
 
