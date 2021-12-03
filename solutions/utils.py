@@ -36,6 +36,7 @@ def runner(funcs: List[Callable[[str], int]], test_inputs: List[str]) -> List[Li
         '-p', '--parts',
         nargs='+',
         type=int,
+        required=True,
         help='which parts of the problem to solve (1, 2 or both)'
     )
     args = parser.parse_args()
