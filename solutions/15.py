@@ -29,10 +29,12 @@ def neighbours(node: Tuple[int, int]) -> List[Tuple[int, int]]:
 def search(risk_levels: Dict[Tuple[int, int], int], size: int) -> int:
     start = (0, 0)
     queue = deque([start])
-    seen = {start}
+    seen = set()
     costs = {start: 0}
     while queue:
-        node = queue.popleft()
+        node = min(queue, key=lambda p: costs[(p[0], p[1])])
+        queue.remove(node)
+        seen.add(node)
         if node == (size - 1, size - 1):
             return costs[node]
         for neighbour in neighbours(node):
@@ -45,7 +47,6 @@ def search(risk_levels: Dict[Tuple[int, int], int], size: int) -> int:
                 costs[neighbour] = new_cost
             if neighbour not in seen and neighbour not in queue:
                 queue.append(neighbour)
-        seen.add(node)
 
     return 0
 
@@ -84,9 +85,4 @@ def _2(inp: str) -> int:
 
 
 if __name__ == '__main__':
-    with open('inputs/15.txt') as f:
-        input_s = f.read()
-    print(_2(input_s))
-    exit()
     print(utils.runner([_1, _2], [test]))
-
