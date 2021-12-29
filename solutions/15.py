@@ -60,7 +60,7 @@ def _1(inp: str) -> int:
     }
     return search(risk_levels, len(lines))
 
-    
+
 def _2(inp: str) -> int:
     lines = inp.splitlines()
     risk_levels = {
