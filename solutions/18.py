@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import math
-from copy import deepcopy
 from functools import reduce
+from itertools import permutations
 
 import utils
 
@@ -19,13 +19,29 @@ test = """\
 [[[5,[7,4]],7],1]
 [[[[4,2],2],6],[8,7]]\
 """
+
+
 small_test = """\
 [[[[4,3],4],4],[7,[[8,4],9]]]
 [1,1]\
 """
 
 
-def explode(snailfish_number: str):
+another_test = """\
+[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]
+[[[5,[2,8]],4],[5,[[9,9],0]]]
+[6,[[[6,2],[5,6]],[[7,6],[4,7]]]]
+[[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]
+[[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]
+[[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]
+[[[[5,4],[7,7]],8],[[8,3],8]]
+[[9,3],[[9,9],[6,[4,9]]]]
+[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
+[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]\
+"""
+
+
+def explode(snailfish_number: str) -> str:
     print('explode called...')
     nested_level = -1
     sn = list(snailfish_number)
@@ -81,7 +97,7 @@ def explode(snailfish_number: str):
     return ''.join(sn), True
 
 
-def split(snailfish_number: str):
+def split(snailfish_number: str) -> str:
     print('split called...')
     sn = list(snailfish_number)
     large_number = None
@@ -112,23 +128,32 @@ def reduction(sn1: str, sn2: str) -> str:
 
 
 def magnitude(final_sum: list) -> int:
+    ret = 0
     left, right = final_sum
     if isinstance(left, list):
-        return 3 * magnitude(left) + 2 * magnitude(right)
-    return 3 * left + 2 * right
+        ret += 3 * magnitude(left)
+    else:
+        ret += 3 * left
+
+    if isinstance(right, list):
+        ret += 2 * magnitude(right)
+    else:
+        ret += 2 * right
+
+    return ret
 
 
 def _1(inp: str) -> int:
-    snailfish_numbers = inp.splitlines()
-    final_sum = reduce(reduction, snailfish_numbers)
-    final_list = eval(final_sum)
-    return magnitude(final_list)
+    return magnitude(eval(reduce(reduction, inp.splitlines())))
 
 
 def _2(inp: str) -> int:
-    return 0
+    return max(
+        magnitude(eval(reduce(reduction, sn)))
+        for sn in permutations(inp.splitlines(), 2)
+    )
 
 
 if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
+    print(utils.runner([_1, _2], [another_test]))
 
