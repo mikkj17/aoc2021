@@ -1,6 +1,4 @@
-import utils
-
-test = """\
+test_str = """\
 be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
 edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
 fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg
@@ -14,15 +12,15 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 """
 
 
-def _1(inp: str) -> int:
-    lines = [line.split(' | ') for line in inp.splitlines()]
-    return sum(len(digits) in {2, 3, 4, 7} 
-               for _, output in lines for digits in output.split()
-              )
+def part_one(inp: str) -> int:
+    lines = [line.split(" | ") for line in inp.splitlines()]
+    return sum(
+        len(digits) in {2, 3, 4, 7} for _, output in lines for digits in output.split()
+    )
 
 
-def _2(inp: str) -> int:
-    lines = [line.split(' | ') for line in inp.splitlines()]
+def part_two(inp: str) -> int:
+    lines = [line.split(" | ") for line in inp.splitlines()]
     values = []
     for input_, output in lines:
         signals = [set(signal) for signal in sorted(input_.split(), key=len)]
@@ -32,36 +30,38 @@ def _2(inp: str) -> int:
         eight = signals[-1]
         two_three_five = list(filter(lambda s: len(s) == 5, signals))
         zero_six_nine = list(filter(lambda s: len(s) == 6, signals))
-        three, = list(filter(lambda s: one <= s, two_three_five))
+        (three,) = list(filter(lambda s: one <= s, two_three_five))
         two_five = list(filter(lambda s: s != three, two_three_five))
         bot = three - four - seven
         mid = three - seven - bot
         zero = eight - mid
         six_nine = list(filter(lambda s: s != zero, zero_six_nine))
-        nine, = list(filter(lambda s: one <= s, six_nine))
-        six, = list(filter(lambda s: s != nine, six_nine))
+        (nine,) = list(filter(lambda s: one <= s, six_nine))
+        (six,) = list(filter(lambda s: s != nine, six_nine))
         top_right = one - six
-        two, = list(filter(lambda s: top_right <= s, two_five))
-        five, = list(filter(lambda s: s != two, two_five))
-        
+        (two,) = list(filter(lambda s: top_right <= s, two_five))
+        (five,) = list(filter(lambda s: s != two, two_five))
+
         mapping = {
-            ''.join(sorted(zero)): '0',
-            ''.join(sorted(one)): '1',
-            ''.join(sorted(two)): '2',
-            ''.join(sorted(three)): '3',
-            ''.join(sorted(four)): '4',
-            ''.join(sorted(five)): '5',
-            ''.join(sorted(six)): '6',
-            ''.join(sorted(seven)): '7',
-            ''.join(sorted(eight)): '8',
-            ''.join(sorted(nine)): '9'
+            "".join(sorted(zero)): "0",
+            "".join(sorted(one)): "1",
+            "".join(sorted(two)): "2",
+            "".join(sorted(three)): "3",
+            "".join(sorted(four)): "4",
+            "".join(sorted(five)): "5",
+            "".join(sorted(six)): "6",
+            "".join(sorted(seven)): "7",
+            "".join(sorted(eight)): "8",
+            "".join(sorted(nine)): "9",
         }
-        value = ''.join(mapping[''.join(sorted(out))] for out in output.split())
+        value = "".join(mapping["".join(sorted(out))] for out in output.split())
         values.append(value)
 
     return sum(map(int, values))
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

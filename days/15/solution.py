@@ -1,9 +1,6 @@
 from collections import deque
-from typing import Tuple, List, Dict
 
-import utils
-
-test = """\
+test_str = """\
 1163751742
 1381373672
 2136511328
@@ -17,7 +14,7 @@ test = """\
 """
 
 
-def neighbours(node: Tuple[int, int]) -> List[Tuple[int, int]]:
+def neighbours(node: tuple[int, int]) -> list[tuple[int, int]]:
     x, y = node
     ret = []
     for offset in (-1, 1):
@@ -26,7 +23,7 @@ def neighbours(node: Tuple[int, int]) -> List[Tuple[int, int]]:
     return ret
 
 
-def search(risk_levels: Dict[Tuple[int, int], int], size: int) -> int:
+def search(risk_levels: dict[tuple[int, int], int], size: int) -> int:
     start = (0, 0)
     queue = deque([start])
     seen = set()
@@ -51,22 +48,18 @@ def search(risk_levels: Dict[Tuple[int, int], int], size: int) -> int:
     return 0
 
 
-def _1(inp: str) -> int:
+def part_one(inp: str) -> int:
     lines = inp.splitlines()
     risk_levels = {
-        (i, j): int(val)
-        for i, row in enumerate(lines)
-        for j, val in enumerate(row)
+        (i, j): int(val) for i, row in enumerate(lines) for j, val in enumerate(row)
     }
     return search(risk_levels, len(lines))
 
 
-def _2(inp: str) -> int:
+def part_two(inp: str) -> int:
     lines = inp.splitlines()
     risk_levels = {
-        (i, j): int(val)
-        for i, row in enumerate(lines)
-        for j, val in enumerate(row)
+        (i, j): int(val) for i, row in enumerate(lines) for j, val in enumerate(row)
     }
     offset = len(lines)
     start = 1
@@ -77,12 +70,21 @@ def _2(inp: str) -> int:
             for j_mul in range(1, 5):
                 idx_i = i + offset * i_mul
                 idx_j = j + offset * j_mul
-                risk_levels[(i, idx_j)] = ((original_value + j_mul) - start) % (end - start + 1) + start
-                risk_levels[(idx_i, j)] = ((original_value + i_mul) - start) % (end - start + 1) + start
-                risk_levels[(idx_i, idx_j)] = ((original_value + i_mul + j_mul) - start) % (end - start + 1) + start
+                risk_levels[(i, idx_j)] = ((original_value + j_mul) - start) % (
+                    end - start + 1
+                ) + start
+                risk_levels[(idx_i, j)] = ((original_value + i_mul) - start) % (
+                    end - start + 1
+                ) + start
+                risk_levels[(idx_i, idx_j)] = (
+                    (original_value + i_mul + j_mul) - start
+                ) % (end - start + 1) + start
 
     return search(risk_levels, len(lines) * 5)
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

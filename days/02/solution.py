@@ -1,6 +1,4 @@
-import utils
-
-test = """\
+test_str = """\
 forward 5
 down 5
 forward 8
@@ -9,28 +7,28 @@ down 8
 forward 2"""
 
 
-def _1(inp: str) -> int:
+def part_one(inp: str) -> int:
     horizontal = depth = 0
     for line in inp.splitlines():
         command, a = line.split()
         x = int(a)
-        if command == 'forward':
+        if command == "forward":
             horizontal += x
-        elif command == 'down':
+        elif command == "down":
             depth += x
         else:
             depth -= x
     return horizontal * depth
 
 
-def _2(inp: str) -> int:
+def part_two(inp: str) -> int:
     horizontal = depth = aim = 0
     for line in inp.splitlines():
         command, a = line.split()
         x = int(a)
-        if command == 'down':
+        if command == "down":
             aim += x
-        elif command == 'up':
+        elif command == "up":
             aim -= x
         else:
             horizontal += x
@@ -38,6 +36,8 @@ def _2(inp: str) -> int:
     return horizontal * depth
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

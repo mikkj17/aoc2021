@@ -1,9 +1,6 @@
 import re
-from typing import Set, Tuple
 
-import utils
-
-test = """\
+test_str = """\
 6,10
 0,14
 9,10
@@ -27,19 +24,20 @@ fold along y=7
 fold along x=5\
 """
 
-def print_state(state: Set[Tuple[int, int]], size_x: int, size_y: int) -> None:
+
+def print_state(state: set[tuple[int, int]], size_x: int, size_y: int) -> None:
     for i in range(size_y + 1):
         for j in range(size_x + 1):
-            print('#' if (j, i) in state else '.', end=' ')
+            print("#" if (j, i) in state else ".", end=" ")
         print()
 
 
-def _1(inp: str) -> int:
-    p1, p2 = inp.split('\n\n')
+def part_one(inp: str) -> int:
+    p1, p2 = inp.split("\n\n")
     dots = set()
     size_x = size_y = 0
     for line in p1.splitlines():
-        x, y = line.split(',')
+        x, y = line.split(",")
         if int(x) > size_x:
             size_x = int(x)
         if int(y) > size_y:
@@ -48,12 +46,12 @@ def _1(inp: str) -> int:
 
     folds = []
     for line in p2.splitlines():
-        axis, amount = re.match(r'^fold along (x|y)=(\d+)', line).groups()
+        axis, amount = re.match(r"^fold along (x|y)=(\d+)", line).groups()
         folds.append((axis, int(amount)))
 
     for idx, (axis, amount) in enumerate(folds[:1]):
         new_state = set()
-        if axis == 'x':
+        if axis == "x":
             for x, y in dots:
                 if x > amount:
                     x_pos = x - 2 * (x - amount)
@@ -73,12 +71,12 @@ def _1(inp: str) -> int:
     return len(dots)
 
 
-def _2(inp: str) -> int:
-    p1, p2 = inp.split('\n\n')
+def part_two(inp: str) -> int:
+    p1, p2 = inp.split("\n\n")
     dots = set()
     size_x = size_y = 0
     for line in p1.splitlines():
-        x, y = line.split(',')
+        x, y = line.split(",")
         if int(x) > size_x:
             size_x = int(x)
         if int(y) > size_y:
@@ -87,12 +85,12 @@ def _2(inp: str) -> int:
 
     folds = []
     for line in p2.splitlines():
-        axis, amount = re.match(r'^fold along (x|y)=(\d+)', line).groups()
+        axis, amount = re.match(r"^fold along (x|y)=(\d+)", line).groups()
         folds.append((axis, int(amount)))
 
     for idx, (axis, amount) in enumerate(folds):
         new_state = set()
-        if axis == 'x':
+        if axis == "x":
             for x, y in dots:
                 if x > amount:
                     x_pos = x - 2 * (x - amount)
@@ -113,6 +111,8 @@ def _2(inp: str) -> int:
     return len(dots)
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

@@ -1,8 +1,6 @@
 import numpy as np
 
-import utils
-
-test = """\
+test_str = """\
 7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
@@ -24,19 +22,21 @@ test = """\
  2  0 12  3  7\
 """
 
+
 def check_won(board, seen):
     for row in board:
         if set(row) <= seen:
             return True, list(row)
     for idx in range(board.shape[1]):
-        col = board[:,idx]
+        col = board[:, idx]
         if set(col) <= seen:
             return True, list(col)
     return False, []
 
-def _1(inp: str) -> int:
-    parts = inp.split('\n\n')
-    nums = list(map(int, parts[0].split(',')))
+
+def part_one(inp: str) -> int:
+    parts = inp.split("\n\n")
+    nums = list(map(int, parts[0].split(",")))
     boards = parts[1:]
 
     int_boards = []
@@ -49,15 +49,13 @@ def _1(inp: str) -> int:
             won, numbers = check_won(np.array(board), seen)
             if won:
                 return sum(n for row in board for n in row if n not in seen) * num
-            
-                
+
     return 0
 
 
-
-def _2(inp: str) -> int:
-    parts = inp.split('\n\n')
-    nums = list(map(int, parts[0].split(',')))
+def part_two(inp: str) -> int:
+    parts = inp.split("\n\n")
+    nums = list(map(int, parts[0].split(",")))
     boards = parts[1:]
 
     int_boards = []
@@ -72,13 +70,13 @@ def _2(inp: str) -> int:
             if won:
                 wons.add(b_idx)
                 if len(wons) == len(boards):
-                    print(len(wons), len(boards))
-                    print(board, numbers, num)
                     return sum(n for row in board for n in row if n not in seen) * num
- 
+
     return 0
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

@@ -1,6 +1,4 @@
-import utils
-
-test = """\
+test_str = """\
 [({(<(())[]>[[{[]{<()<>>
 [(()[<>])]({[<{<<[]>>(
 {([(<{}[<>[]}>{[]{[(<()>
@@ -14,13 +12,8 @@ test = """\
 """
 
 
-def _1(inp: str) -> int:
-    mapping = {
-        '(': ')',
-        '[': ']',
-        '{': '}',
-        '<': '>'
-    }
+def part_one(inp: str) -> int:
+    mapping = {"(": ")", "[": "]", "{": "}", "<": ">"}
     illegal_chars = []
     for line in inp.splitlines():
         stack = []
@@ -32,22 +25,12 @@ def _1(inp: str) -> int:
                 if mapping[open_char] != c:
                     illegal_chars.append(c)
                     break
-    score_map = {
-        ')': 3,
-        ']': 57,
-        '}': 1197,
-        '>': 25137
-    }
+    score_map = {")": 3, "]": 57, "}": 1197, ">": 25137}
     return sum(map(lambda x: score_map[x], illegal_chars))
 
 
-def _2(inp: str) -> int:
-    mapping = {
-        '(': ')',
-        '[': ']',
-        '{': '}',
-        '<': '>'
-    }
+def part_two(inp: str) -> int:
+    mapping = {"(": ")", "[": "]", "{": "}", "<": ">"}
     lines = inp.splitlines()
     corrupted_lines = []
     for line in lines:
@@ -60,14 +43,9 @@ def _2(inp: str) -> int:
                 if mapping[open_char] != c:
                     corrupted_lines.append(line)
                     break
- 
+
     remaining_lines = list(set(lines) - set(corrupted_lines))
-    score_map = {
-        ')': 1,
-        ']': 2,
-        '}': 3,
-        '>': 4
-    }
+    score_map = {")": 1, "]": 2, "}": 3, ">": 4}
     scores = []
     for line in remaining_lines:
         stack = []
@@ -86,6 +64,8 @@ def _2(inp: str) -> int:
     return sorted(scores)[len(scores) // 2]
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

@@ -1,7 +1,4 @@
-from typing import List
-import utils
-
-test = """\
+test_str = """\
 5483143223
 2745854711
 5264556173
@@ -15,20 +12,7 @@ test = """\
 """
 
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-
 class Octopus:
-
     def __init__(self, i: int, j: int, energy: int):
         self.i = i
         self.j = j
@@ -36,20 +20,13 @@ class Octopus:
         self.flashed = False
 
     def __repr__(self):
-        return f'{self.i=}, {self.j=}, {self.energy=}, {self.flashed=}'
+        return f"{self.i=}, {self.j=}, {self.energy=}, {self.flashed=}"
 
 
 class Grid:
-    def __init__(self, grid: List[List[Octopus]]) -> None:
+    def __init__(self, grid: list[list[Octopus]]) -> None:
         self.grid = grid
         self.flash_count = 0
-
-    def print(self) -> None:
-        for row in self.grid:
-            for octopus in row:
-                color = bcolors.OKBLUE if octopus.energy == 0 else ''
-                print(f'{color}{octopus.energy}{bcolors.ENDC}', end=' ')
-            print()
 
     def increase_energy(self) -> None:
         for row in self.grid:
@@ -93,7 +70,7 @@ def flash(octopus: Octopus, grid: Grid) -> None:
                         flash(adj_octo, grid)
 
 
-def _1(inp: str) -> int:
+def part_one(inp: str) -> int:
     octopuses = [
         [Octopus(i, j, int(x)) for j, x in enumerate(row)]
         for i, row in enumerate(inp.splitlines())
@@ -104,7 +81,7 @@ def _1(inp: str) -> int:
     return grid.flash_count
 
 
-def _2(inp: str) -> int:
+def part_two(inp: str) -> int:
     octopuses = [
         [Octopus(i, j, int(x)) for j, x in enumerate(row)]
         for i, row in enumerate(inp.splitlines())
@@ -118,6 +95,8 @@ def _2(inp: str) -> int:
             return step_count
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

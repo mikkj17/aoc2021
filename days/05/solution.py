@@ -1,11 +1,7 @@
 import re
 from collections import defaultdict
-from pprint import pprint
-from typing import List, Tuple
 
-import utils
-
-test = """\
+test_str = """\
 0,9 -> 5,9
 8,0 -> 0,8
 9,4 -> 3,4
@@ -19,23 +15,16 @@ test = """\
 """
 
 
-def parse(inp: str) -> List[Tuple[int, int, int, int]]:
-    regex = re.compile(r'^(\d+),(\d+) -> (\d+),(\d+)$')
+def parse(inp: str) -> list[tuple[int, int, int, int]]:
+    regex = re.compile(r"^(\d+),(\d+) -> (\d+),(\d+)$")
     return [tuple(map(int, regex.match(line).groups())) for line in inp.splitlines()]
 
 
-def print_diagram(diagram: List[Tuple[int, int]]) -> None:
-    for i in range(10):
-        for j in range(10):
-            print(diagram[(j, i)], end=' ')
-        print()
- 
-
-def get_points(x1: int, y1: int, x2: int, y2: int) -> List[Tuple[int, int]]:
+def get_points(x1: int, y1: int, x2: int, y2: int) -> list[tuple[int, int]]:
     ret = [(x1, y1)]
     if abs(x1 - x2) == abs(y1 - y2):
 
-        if x1 == y1 and x2 == y2 :
+        if x1 == y1 and x2 == y2:
             while x1 < x2:
                 x1 += 1
                 y1 += 1
@@ -96,7 +85,7 @@ def get_points(x1: int, y1: int, x2: int, y2: int) -> List[Tuple[int, int]]:
         return ret
 
 
-def _1(inp: str) -> int:
+def part_one(inp: str) -> int:
     lines = parse(inp)
     diagram = defaultdict(int)
     considered = [(x1, y1, x2, y2) for x1, y1, x2, y2 in lines if x1 == x2 or y1 == y2]
@@ -104,7 +93,7 @@ def _1(inp: str) -> int:
         all_points = get_points(*line)
         for point in all_points:
             diagram[point] += 1
-    
+
     count = 0
     for counter in diagram.values():
         if counter >= 2:
@@ -112,7 +101,7 @@ def _1(inp: str) -> int:
     return count
 
 
-def _2(inp: str) -> int:
+def part_two(inp: str) -> int:
     lines = parse(inp)
     diagram = defaultdict(int)
     for line in lines:
@@ -120,8 +109,6 @@ def _2(inp: str) -> int:
         for point in all_points:
             diagram[point] += 1
 
-    print_diagram(diagram)
-
     count = 0
     for counter in diagram.values():
         if counter >= 2:
@@ -129,7 +116,8 @@ def _2(inp: str) -> int:
     return count
 
 
-if __name__ == '__main__':
-    print(get_points(6, 4, 2, 0))
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

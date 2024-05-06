@@ -1,11 +1,6 @@
-from __future__ import annotations
-
 import re
-from pprint import pprint
 
-import utils
-
-test = 'target area: x=20..30, y=-10..-5'
+test_str = "target area: x=20..30, y=-10..-5"
 
 
 def step(pos: tuple[int, int], velocity: tuple[int, int]) -> list[tuple[int, int]]:
@@ -44,31 +39,33 @@ def fire(initial_vel: tuple[int, int], limits: list[int]) -> tuple[bool, int]:
             if x > high_x:
                 return False, 0
 
-    return False, 0
 
-
-def _1(inp: str) -> int:
-    nums = re.match(r'target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)', inp).groups()
+def part_one(inp: str) -> int:
+    nums = re.match(
+        r"target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)", inp
+    ).groups()
     limits = [int(x) for x in nums]
     return max(
         (fire((x, y), limits) for x in range(100) for y in range(100)),
-        key=lambda x: x[1]
+        key=lambda x: x[1],
     )[1]
 
 
-def _2(inp: str) -> int:
-    nums = re.match(r'target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)', inp).groups()
+def part_two(inp: str) -> int:
+    nums = re.match(
+        r"target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)", inp
+    ).groups()
     limits = [int(x) for x in nums]
     attempts = [
         ((x, y), fire((x, y), limits))
         for x in range(-1000, 1000)
         for y in range(-1000, 1000)
     ]
-    return len([
-        (vel, height) for vel, (success, height) in attempts if success
-    ])
+    return len([(vel, height) for vel, (success, height) in attempts if success])
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))

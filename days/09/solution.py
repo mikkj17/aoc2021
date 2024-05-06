@@ -1,9 +1,6 @@
 from functools import reduce
-from typing import List, Set, Tuple
 
-import utils
-
-test = """\
+test_str = """\
 2199943210
 3987894921
 9856789892
@@ -12,7 +9,7 @@ test = """\
 """
 
 
-def low_point(i: int, j: int, height: int, matrix: List[List[int]]) -> bool:
+def low_point(i: int, j: int, height: int, matrix: list[list[int]]) -> bool:
     for offset in [-1, 1]:
         try:
             if height >= matrix[i + offset][j]:
@@ -27,7 +24,7 @@ def low_point(i: int, j: int, height: int, matrix: List[List[int]]) -> bool:
     return True
 
 
-def _1(inp: str) -> int:
+def part_one(inp: str) -> int:
     matrix = [[int(x) for x in row] for row in inp.splitlines()]
     risk_levels = []
     for i, row in enumerate(matrix):
@@ -38,7 +35,13 @@ def _1(inp: str) -> int:
     return sum(risk_levels)
 
 
-def flow(i: int, j: int, height: int, matrix: List[List[int]], points: Set[Tuple[int, int, int]]) -> None:
+def flow(
+    i: int,
+    j: int,
+    height: int,
+    matrix: list[list[int]],
+    points: set[tuple[int, int, int]],
+) -> None:
     points.add((i, j, height))
 
     for offset in [-1, 1]:
@@ -49,16 +52,16 @@ def flow(i: int, j: int, height: int, matrix: List[List[int]], points: Set[Tuple
             entry = matrix[idx_i][j]
             if entry != 9:
                 if height < entry:
-                    flow(idx_i, j, entry, matrix,  points)
+                    flow(idx_i, j, entry, matrix, points)
 
         if 0 <= i < len(matrix) and 0 <= idx_j < len(matrix[0]):
             entry = matrix[i][idx_j]
             if entry != 9:
                 if height < entry:
-                    flow(i, idx_j, entry, matrix,  points)
+                    flow(i, idx_j, entry, matrix, points)
 
 
-def _2(inp: str) -> int:
+def part_two(inp: str) -> int:
     matrix = [[int(x) for x in row] for row in inp.splitlines()]
     low_points = []
     for i, row in enumerate(matrix):
@@ -73,9 +76,11 @@ def _2(inp: str) -> int:
         basins.append(basin)
 
     top_three = [len(x) for x in sorted(basins, key=len, reverse=True)[:3]]
-    return reduce(lambda a, b: a*b, top_three)
+    return reduce(lambda a, b: a * b, top_three)
 
 
-if __name__ == '__main__':
-    print(utils.runner([_1, _2], [test]))
-
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        input_str = f.read()
+    print(part_one(input_str))
+    print(part_two(input_str))
